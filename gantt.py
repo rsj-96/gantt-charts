@@ -9,7 +9,7 @@ import pandas as pd
 import io
 
 
-st.write(print(os.path.join(os.path.dirname(__file__), "GOTHIC.TTF")) # finds files path of repository
+st.write(print(os.path.join(os.path.dirname(__file__), "GOTHIC.TTF"))) # finds files path of repository
 
 # Name of Script
 st.title('Gantt Chart Generator 📊')  # Replace with your script name
@@ -185,6 +185,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
