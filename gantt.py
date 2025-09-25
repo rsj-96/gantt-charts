@@ -25,12 +25,6 @@ with st.expander("Quick instruction📝"):
             6. Any questions please speak with RJ
             ''')
 
-#Applying font
-font_path = "/mount/src/solubility-graphs/GOTHIC.TTF" 
-font_prop = fm.FontProperties(fname=font_path) 
-# Apply the font globally for all plots 
-plt.rcParams['font.family'] = font_prop.get_name()
-
 st.subheader("Download Template")
 # Download a Template:
 data = {
@@ -183,6 +177,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
