@@ -26,7 +26,8 @@ with st.expander("Quick instruction📝"):
             ''')
 
 #Applying font
-font_prop = fm.FontProperties(fname="GOTHIC.TTF")
+font_path = "/mount/src/Gantt-Charts/GOTHIC.TTF"
+font_prop = fm.FontProperties(fname=font_path)
 
 # Apply the font globally for all plots
 plt.rcParams['font.family'] = font_prop.get_name()
@@ -183,6 +184,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
