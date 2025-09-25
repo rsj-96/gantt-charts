@@ -9,7 +9,6 @@ import pandas as pd
 import io
 
 
-st.write(print(os.path.join(os.path.dirname(__file__), "GOTHIC.TTF"))) # finds files path of repository
 
 # Name of Script
 st.title('Gantt Chart Generator 📊')  # Replace with your script name
@@ -27,11 +26,11 @@ with st.expander("Quick instruction📝"):
             ''')
 
 #Applying font
-#font_path = "/mount/src/Gantt-Charts/GOTHIC.TTF" #- for the actual script on github
-#font_prop = fm.FontProperties(fname=font_path)
+font_path = "GOTHIC.TTF" #- for the actual script on github
+font_prop = fm.FontProperties(fname=font_path)
 
 # Apply the font globally for all plots
-#plt.rcParams['font.family'] = font_prop.get_name()
+plt.rcParams['font.family'] = font_prop.get_name()
 
 st.subheader("Download Template")
 # Download a Template:
@@ -185,6 +184,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
