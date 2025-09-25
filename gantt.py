@@ -107,76 +107,76 @@ if file:
     st.subheader("Gantt Chart")
     
     if st.button("Generate Gantt Chart"):
-        with st.container(border=True):
-            #---- File Processing -----
-            
-            df = df.dropna(how="all") # drop any acidental empty rows
-            df = df.sort_values(by ="Group", ascending=False) # sort data frame so Gantt chart is presented in the right way
-            df["Start_Date"] = pd.to_datetime(df["Start_Date"], format="%d-%m-%Y")
+        #---- File Processing -----
+        
+        df = df.dropna(how="all") # drop any acidental empty rows
+        df = df.sort_values(by ="Group", ascending=False) # sort data frame so Gantt chart is presented in the right way
+        df["Start_Date"] = pd.to_datetime(df["Start_Date"], format="%d-%m-%Y")
 
-            #----Ordering dataframe----
-            # project start date
-            proj_start = df.Start_Date.min()
+        #----Ordering dataframe----
+        # project start date
+        proj_start = df.Start_Date.min()
 
-            # caluculating actual end dates from number of days (including the weekend)
-            df["Planned_End"] = np.busday_offset(df['Start_Date'].values.astype('datetime64[D]'), df['FTE_Days'] - 1, roll='forward', weekmask='1111100')
+        # caluculating actual end dates from number of days (including the weekend)
+        df["Planned_End"] = np.busday_offset(df['Start_Date'].values.astype('datetime64[D]'), df['FTE_Days'] - 1, roll='forward', weekmask='1111100')
 
-            df["Completed_end"] = np.busday_offset(df['Start_Date'].values.astype('datetime64[D]'), df['Completed_FTE_Days'] - 1, roll='forward', weekmask='1111100')
+        df["Completed_end"] = np.busday_offset(df['Start_Date'].values.astype('datetime64[D]'), df['Completed_FTE_Days'] - 1, roll='forward', weekmask='1111100')
 
-            # Calculating actual days
+        # Calculating actual days
 
-            df["Planned_days"] = (df["Planned_End"] - df["Start_Date"]).dt.days + 1
+        df["Planned_days"] = (df["Planned_End"] - df["Start_Date"]).dt.days + 1
 
-            df["Completed_days"] = (df["Completed_end"] - df["Start_Date"]).dt.days + 1
+        df["Completed_days"] = (df["Completed_end"] - df["Start_Date"]).dt.days + 1
 
-            # days between start and current progression of each task
-            df['current_num'] = (df.Planned_days * df.Completed_days)
+        # days between start and current progression of each task
+        df['current_num'] = (df.Planned_days * df.Completed_days)
 
 
-            #------ Colours for the Gantt Chart--------
-            df['group'] = np.floor(df['Group'])
+        #------ Colours for the Gantt Chart--------
+        df['group'] = np.floor(df['Group'])
 
-            def color(row):
-                #color_dict = {1.0 :'#F991B4', 2.0:'#FFB379', 3.0:'#0EC3EB', 4.0:'#6CF2EC', 5.0:'#005F78', 6.0 : '#00ADB2', 7.0 : '#BABAFF', 8.0: "#8080ff", 9.0: "#FFB379"}
-                return colour_dict[row['group']]
+        def color(row):
+            #color_dict = {1.0 :'#F991B4', 2.0:'#FFB379', 3.0:'#0EC3EB', 4.0:'#6CF2EC', 5.0:'#005F78', 6.0 : '#00ADB2', 7.0 : '#BABAFF', 8.0: "#8080ff", 9.0: "#FFB379"}
+            return colour_dict[row['group']]
 
-            df['color'] = df.apply(color, axis=1)
+        df['color'] = df.apply(color, axis=1)
 
-            
-            #st.dataframe(df) #check df
-            
-            #-------Plotting---------
+        
+        #st.dataframe(df) #check df
+        
+        #-------Plotting---------
 
-            fig, ax = plt.subplots(1, figsize=(width,height))
+        fig, ax = plt.subplots(1, figsize=(width,height))
 
-            # bars
-            ax.barh(df.Task_Name, df.Completed_days, left=df.Start_Date, color=df.color)
-            ax.barh(df.Task_Name, df.Planned_days, left=df.Start_Date, color=df.color, alpha=0.5)
-            
-            #plotting milestone
-            if df["Milestone"].any():
-                ax.scatter( df.Milestone, df.Task_Name, facecolors="none", edgecolors="#394042", marker="D", s=150, linewidth=1.5 )
-            else: 
-                pass
-            
-            #Labelling
-            ax.xaxis.tick_top()
-            ax.xaxis.set_label_position('top')
-            ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
-            ax.tick_params(axis="both", labelsize=size)
-    
-            st.pyplot(fig)
-            
-        gantt_fig = io.BytesIO()
-            
-        fig.savefig(gantt_fig, format="png", dpi=600, bbox_inches="tight")
-            
-        st.download_button(
-            label="Download Image",
-            data=gantt_fig.getvalue(),
-            file_name="Gantt_chart.png",
-            mime="image/png"
-            )
+        # bars
+        ax.barh(df.Task_Name, df.Completed_days, left=df.Start_Date, color=df.color)
+        ax.barh(df.Task_Name, df.Planned_days, left=df.Start_Date, color=df.color, alpha=0.5)
+        
+        #plotting milestone
+        if df["Milestone"].any():
+            ax.scatter( df.Milestone, df.Task_Name, facecolors="none", edgecolors="#394042", marker="D", s=150, linewidth=1.5 )
+        else: 
+            pass
+        
+        #Labelling
+        ax.xaxis.tick_top()
+        ax.xaxis.set_label_position('top')
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
+        ax.tick_params(axis="both", labelsize=size)
+
+        st.pyplot(fig)
+        
+    gantt_fig = io.BytesIO()
+        
+    fig.savefig(gantt_fig, format="png", dpi=600, bbox_inches="tight")
+        
+    st.download_button(
+        label="Download Image",
+        data=gantt_fig.getvalue(),
+        file_name="Gantt_chart.png",
+        mime="image/png"
+        )
+
 
 
 
