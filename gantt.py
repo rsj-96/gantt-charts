@@ -166,16 +166,17 @@ if file:
 
         st.pyplot(fig)
         
-    gantt_fig = io.BytesIO()
-        
-    fig.savefig(gantt_fig, format="png", dpi=600, bbox_inches="tight")
-        
-    st.download_button(
-        label="Download Image",
-        data=gantt_fig.getvalue(),
-        file_name="Gantt_chart.png",
-        mime="image/png"
-        )
+        gantt_fig = io.BytesIO()
+            
+        fig.savefig(gantt_fig, format="png", dpi=600, bbox_inches="tight")
+            
+        st.download_button(
+            label="Download Image",
+            data=gantt_fig.getvalue(),
+            file_name="Gantt_chart.png",
+            mime="image/png"
+            )
+
 
 
 
