@@ -26,7 +26,7 @@ with st.expander("Quick instruction📝"):
 
 
 #Upload a File
-st.subheader("Upload Gantt_Chart_Template.xls file - Classic Gantt Chart")
+st.subheader("Upload *Gantt_Chart_Template.xls* file)
 st.write("If you do not have this template, speak with RJ or refer to 'Digital Tools' email")
 
 file = st.file_uploader("Choose a '.xlsx' File", type = 'xlsx') # streamlit file uploader where the excel type is specified
@@ -147,6 +147,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
