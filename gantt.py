@@ -17,46 +17,17 @@ st.title('Gantt Chart Generator 📊')  # Replace with your script name
 st.subheader("Instructions")
 with st.expander("Quick instruction📝"): 
     st.markdown('''
-            1. Download Template
-            2. Fill in sheet with required information
-            3. Drag and drop Gantt excel file to submit
-            4. Generate your Gantt chart
-            5. Copy and paste the generated image or click download button for higher quality 
-            6. Any questions please speak with RJ
+            1. Fill Gantt_Chart_Template with required information - if you do not have this speak with RJ or refer to 'Digital tools' email
+            2. Drag and drop Gantt excel file to submit
+            3. Generate your Gantt chart
+            4. Copy and paste the generated image or click download button for higher quality 
+            5. Any questions please speak with RJ
             ''')
-
-st.subheader("Download Template")
-# Download a Template:
-data = {
-            "Group": [1, 2, 3, 3.1, 3.2, 4],
-            "Task_Name": ["Ongoing Project Management", "Ongoing Analytical Support", "WP1", "WP1a", "WP1b", "WP2"],
-            "Start_Date": ["05/01/2026", "05/01/2026", "05/01/2026", "05/01/2026", "02/02/2026", "09/03/2026"],
-            "FTE_Days": [105, 105, 45, 20, 25, 40] ,
-            "Completed_FTE_Days": [90, 3, 3, 15, 3, 35],
-            "Milestone": ['', '', '', '', '', '']
-        }  
-
-excel_template = pd.DataFrame(data) # transformation of the data dictionary to a pandas data frame
-
-excel_file = io.BytesIO() # in-memory binary stream to store the excel file - will be written into a stream rather than a file to be saved on a disk
-
-with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer: # pd.ExcelWriter is a pandas function for converting data into an excel file
-    excel_template.to_excel(writer, index=False, sheet_name='Sheet1') # converts the stream file to an excel file
-
-
-excel_file.seek(0) #  resets pointer back to the beginning
-
-st.download_button(
-            label="Download Gantt Chart Template.xlsx ",
-            data=excel_file,
-            file_name="Gantt_Chart_Template.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )  # Makes it so you can download the excel file with the streamlit widget
-
 
 
 #Upload a File
-st.subheader("Upload Excel file - Classic Gantt Chart")
+st.subheader("Upload Gantt_Chart_Template.xls file - Classic Gantt Chart")
+st.write("If you do not have this template, speak with RJ or refer to 'Digital Tools' email")
 
 file = st.file_uploader("Choose a '.xlsx' File", type = 'xlsx') # streamlit file uploader where the excel type is specified
 if file:
@@ -176,6 +147,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
