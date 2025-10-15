@@ -91,13 +91,16 @@ if file:
         # caluculating actual end dates from number of days (including the weekend)
         df["Planned_End"] = np.busday_offset(df['Start_Date'].values.astype('datetime64[D]'), df['FTE_Days'] - 1, roll='forward', weekmask='1111100')
 
-        df["Completed_end"] = np.busday_offset(df['Start_Date'].values.astype('datetime64[D]'), df['Completed_FTE_Days'] - 1, roll='forward', weekmask='1111100')
+        df["Completed_end"] = np.where(df["Completed_FTE_Days"] > 0, np.busday_offset( df["Start_Date"].values.astype("datetime64[D]"), df["Completed_FTE_Days"] - 1, roll="forward", weekmask="1111100"),
+        df["Start_Date"]) 
 
         # Calculating actual days
 
         df["Planned_days"] = (df["Planned_End"] - df["Start_Date"]).dt.days + 1
 
         df["Completed_days"] = (df["Completed_end"] - df["Start_Date"]).dt.days + 1
+        
+        df.loc[df["Completed_FTE_Days"] <= 0, "Completed_days"] = 0
 
         # days between start and current progression of each task
         df['current_num'] = (df.Planned_days * df.Completed_days)
@@ -120,7 +123,8 @@ if file:
         fig, ax = plt.subplots(1, figsize=(width,height))
 
         # bars
-        ax.barh(df.Task_Name, df.Completed_days, left=df.Start_Date, color=df.color)
+        mask = df["Completed_days"] > 0
+        ax.barh(df.Task_Name[mask], df.Completed_days[mask], left=df.Start_Date[mask], color=df.color[mask])
         ax.barh(df.Task_Name, df.Planned_days, left=df.Start_Date, color=df.color, alpha=0.5)
         
         #plotting milestone
@@ -147,6 +151,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
