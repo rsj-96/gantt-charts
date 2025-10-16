@@ -123,8 +123,7 @@ if file:
         fig, ax = plt.subplots(1, figsize=(width,height))
 
         # bars
-        mask = df["Completed_days"] > 0
-        ax.barh(df.Task_Name[mask], df.Completed_days[mask], left=df.Start_Date[mask], color=df.color[mask])
+        ax.barh(df.Task_Name, df.Completed_days, left=df.Start_Date, color=df.color)
         ax.barh(df.Task_Name, df.Planned_days, left=df.Start_Date, color=df.color, alpha=0.5)
         
         #plotting milestone
@@ -137,11 +136,15 @@ if file:
         ax.xaxis.tick_top()
         ax.xaxis.set_label_position('top')
 
-        locator = mdates.AutoDateLocator()
-        formatter = mdates.DateFormatter("%b %Y")
-        
-        ax.xaxis.set_major_locator(locator)
-        ax.xaxis.set_major_formatter(formatter)
+        start_date = df["Start_Date"].min()
+        end_date = df["Planned_End"].max()
+
+        month_starts = pd.date_range(start=start_date, end=end_date, freq='MS')
+        tick_positions = [start_date] + [m for m in month_starts if m > start_date]
+        tick_labels = [start_date.strftime("%b %Y")] + [m.strftime("%b %Y") for m in month_starts if m > start_date]
+        ax.set_xlim(start_date, end_date)
+        ax.set_xticks(tick_positions)
+        ax.set_xticklabels(tick_labels)
         ax.tick_params(axis="both", labelsize=size)
 
         st.pyplot(fig)
@@ -156,6 +159,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
