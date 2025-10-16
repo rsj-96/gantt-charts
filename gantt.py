@@ -136,6 +136,8 @@ if file:
         #Labelling
         ax.xaxis.tick_top()
         ax.xaxis.set_label_position('top')
+
+        ax.xaxis.set_major_locator(mdates.MonthLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
         ax.tick_params(axis="both", labelsize=size)
 
@@ -151,6 +153,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
