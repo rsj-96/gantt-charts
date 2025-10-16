@@ -137,9 +137,11 @@ if file:
         ax.xaxis.tick_top()
         ax.xaxis.set_label_position('top')
 
-        months = mdates.MonthLocator()
-        ax.xaxis.set_major_locator(months)
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
+        locator = mdates.AutoDateLocator()
+        formatter = mdates.DateFormatter("%b %Y")
+        
+        ax.xaxis.set_major_locator(locator)
+        ax.xaxis.set_major_formatter(formatter)
         ax.tick_params(axis="both", labelsize=size)
 
         st.pyplot(fig)
@@ -154,6 +156,7 @@ if file:
             file_name="Gantt_chart.png",
             mime="image/png"
             )
+
 
 
 
